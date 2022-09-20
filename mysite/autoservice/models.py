@@ -34,6 +34,15 @@ class Uzsakymas(models.Model):
     automobilis_id = models.ForeignKey('Automobilis', verbose_name='Automobilis', on_delete=models.SET_NULL, null=True)
     suma = models.FloatField('Suma')
 
+    UZSK_STATUS = (
+        ('e', 'Eileje'),
+        ('p', 'Priimtas'),
+        ('v', 'Vykdomas'),
+        ('a', 'Galima atsiimti')
+    )
+
+    status = models.CharField(max_length=1, choices=UZSK_STATUS, blank=True, default='e', help_text='Statusas')
+
     class Meta:
         verbose_name = 'Uzsakymas'
         verbose_name_plural = 'Uzsakymai'
