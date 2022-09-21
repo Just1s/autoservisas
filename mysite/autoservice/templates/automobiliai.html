@@ -3,6 +3,6 @@
 <h1>Automobiliai</h1>
 <p>Servise užregistruotų sąrašas:</p>
 {% for a in automobiliai %}
-<li>{{a.klientas}} - {{a.auto_modelis_id}} {{a.valst_nr}}</li>
+<a href="{% url 'automobilis' a.id %}">{{a.auto_modelis_id}} - {{a.valst_nr}}</a>
 {% endfor %}
 {% endblock %}

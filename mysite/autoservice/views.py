@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from .models import Automobilis, Paslauga, Uzsakymas
 
 
@@ -31,3 +30,8 @@ def paslaugos(request):
     }
 
     return render(request, 'paslaugos.html', context=kontext)
+
+
+def automobilis(request, automobilis_id):
+    vienas_auto = get_object_or_404(Automobilis, pk=automobilis_id)
+    return render(request, 'automobilis.html', {'automobilis': vienas_auto})

@@ -31,7 +31,8 @@ class Automobilis(models.Model):
 
 class Uzsakymas(models.Model):
     data = models.DateField('Data', blank=True)
-    automobilis_id = models.ForeignKey('Automobilis', verbose_name='Automobilis', on_delete=models.SET_NULL, null=True)
+    automobilis_id = models.ForeignKey('Automobilis', verbose_name='Automobilis',
+                                       on_delete=models.SET_NULL, null=True, related_name='uzsakymai')
     suma = models.FloatField('Suma')
 
     UZSK_STATUS = (
@@ -65,7 +66,8 @@ class Paslauga(models.Model):
 
 class Uzsakymo_eilute(models.Model):
     paslauga_id = models.ForeignKey('Paslauga', verbose_name='Paslauga', on_delete=models.SET_NULL, null=True)
-    uzsakymas_id = models.ForeignKey('Uzsakymas', verbose_name='Uzsakymas', on_delete=models.SET_NULL, null=True)
+    uzsakymas_id = models.ForeignKey('Uzsakymas', verbose_name='Uzsakymas',
+                                     on_delete=models.SET_NULL, null=True, related_name='uzsak_eil')
     kiekis = models.IntegerField('Kiekis')
     kaina = models.FloatField('Kaina')
 
