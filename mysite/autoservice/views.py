@@ -22,3 +22,12 @@ def automobiliai(request):
     }
 
     return render(request, 'automobiliai.html', context=kontext)
+
+
+def paslaugos(request):
+    pasl = Paslauga.objects.all()
+    kontext = {
+        'paslaugos': pasl
+    }
+
+    return render(request, 'paslaugos.html', context=kontext)
