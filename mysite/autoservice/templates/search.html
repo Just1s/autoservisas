@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Paieškos pagal "{{querytxt}}" rezultatai</h1>
+<br>
+{% if automobiliai %}
+<ul>
+  {% for automobilis in automobiliai %}
+    <li>
+      <a href="{% url 'automobilis' automobilis.id %}">{{automobilis.auto_modelis_id}} - {{automobilis.valst_nr}}</a>
+    </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>Oops. Nieko neradom!</p>
+{% endif %}
+{% endblock %}
