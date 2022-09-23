@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{uzsakymas.data}}</h1>
+<p>Automobilis: <a href="{% url 'automobilis'  uzsakymas.automobilis_id.pk %}">{{uzsakymas.automobilis_id.auto_modelis_id}}</a></p>
+<p>Automobilio vast. nr.: {{uzsakymas.automobilis_id.valst_nr}}</p>
+<p>Suma: {{uzsakymas.suma}}</p>
+<p class="{% if uzsakymas.status == 'a' %}text-success{% elif uzsakymas.status == 'e' %}text-danger{% else %}text-warning{% endif %}">
+    Užsakymo statusas: {{uzsakymas.get_status_display}}
+</p>
+
+<div style="margin-left:20px;margin-top:20px">
+    <h4>Paslaugos:</h4>
+    {% for eilute in uzsakymas.uzsak_eil.all %}
+    <hr>
+    <p>Paslauga: {{eilute.paslauga_id}}</p>
+    <p>Kiekis: {{eilute.kiekis}}</p>
+    <p>Kaina vnt.: {{eilute.kaina}}€</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

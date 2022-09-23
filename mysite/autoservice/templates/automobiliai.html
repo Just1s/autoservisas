@@ -3,6 +3,25 @@
 <h1>Automobiliai</h1>
 <p>Servise užregistruotų sąrašas:</p>
 {% for a in automobiliai %}
-<a href="{% url 'automobilis' a.id %}">{{a.auto_modelis_id}} - {{a.valst_nr}}</a>
+<p><a href="{% url 'automobilis' a.id %}">{{a.auto_modelis_id}} - {{a.valst_nr}}</a></p>
 {% endfor %}
+<div class="container puslapiai">
+    <nav aria-label="...">
+        {% if automobiliai.has_other_pages %}
+        <ul class="pagination pagination-sm justify-content-end">
+            {% for i in automobiliai.paginator.page_range %}
+                {% if automobiliai.number == i %}
+                    <li class="page-item active">
+                        <a class="page-link" href="">{{i}}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{i}}">{{i}}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </nav>
+</div>
 {% endblock %}
