@@ -10,9 +10,13 @@ def index(request):
     auto_kiekis = Automobilis.objects.count()
     paslaugu_kiekis = Paslauga.objects.count()
     uzsakymu_kiekis = Uzsakymas.objects.count()
+    num_visits = request.session.get('num_visits', 1)
+    request.session['num_visits'] = num_visits + 1
     kontext = {'auto_kiekis': auto_kiekis,
                'paslaugu_kiekis': paslaugu_kiekis,
-               'uzsakymu_kiekis': uzsakymu_kiekis}
+               'uzsakymu_kiekis': uzsakymu_kiekis,
+               'num_visits': num_visits
+               }
 
     return render(request, 'index.html', context=kontext)
 
