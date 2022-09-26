@@ -20,6 +20,7 @@ class Automobilis(models.Model):
     auto_modelis_id = models.ForeignKey('Automobilio_modelis', verbose_name='Modelis', on_delete=models.SET_NULL, null=True)
     vin = models.CharField('VIN kodas', max_length=17)
     klientas = models.CharField('Klientas', max_length=30)
+    photo = models.ImageField('Nuotrauka', upload_to='photos', null=True)
 
     class Meta:
         verbose_name = 'Automobilis'
