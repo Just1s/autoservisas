@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Mano užsakymai</h1>
+
+{% if uzsakymas_list %}
+  <ul>
+    {% for uzsak in uzsakymas_list %}
+    <li class="{% if uzsak.is_overdue %}text-danger{% endif %}">
+      <a href="{% url 'uzsakymas-detail' uzsak.pk %}">{{uzsak}}</a>
+      {{uzsak.atsiimti_iki}}
+    </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Šiuo metu užsakymų kuriuos galite atsiimti nėra.</p>
+{% endif %}
+
+{% endblock %}

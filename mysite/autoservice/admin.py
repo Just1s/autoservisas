@@ -10,7 +10,7 @@ class UzsakymoEiluteInline(admin.TabularInline):
 
 
 class UzsakymasAdmin(admin.ModelAdmin):
-    list_display = ('automobilis_id', 'data', 'status')
+    list_display = ('automobilis_id', 'vartotojas', 'data', 'status', 'atsiimti_iki')
     inlines = [UzsakymoEiluteInline]
 
 

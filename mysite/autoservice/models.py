@@ -1,5 +1,8 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from datetime import date
+from tinymce.models import HTMLField
 
 
 # Create your models here.
@@ -21,6 +24,7 @@ class Automobilis(models.Model):
     vin = models.CharField('VIN kodas', max_length=17)
     klientas = models.CharField('Klientas', max_length=30)
     photo = models.ImageField('Nuotrauka', upload_to='photos', null=True)
+    aprasymas = HTMLField()
 
     class Meta:
         verbose_name = 'Automobilis'
@@ -44,6 +48,13 @@ class Uzsakymas(models.Model):
     )
 
     status = models.CharField(max_length=1, choices=UZSK_STATUS, blank=True, default='e', help_text='Statusas')
+    vartotojas = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    atsiimti_iki = models.DateField('Atsiimti iki', null=True, blank=True)
+
+    def is_overdue(self):
+        if self.atsiimti_iki and date.today() > self.atsiimti_iki:
+            return True
+        return False
 
     class Meta:
         verbose_name = 'Uzsakymas'

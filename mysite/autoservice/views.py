@@ -3,6 +3,7 @@ from .models import Automobilis, Paslauga, Uzsakymas
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -65,3 +66,12 @@ def search(request):
                                                 Q(auto_modelis_id__marke__icontains=query_text) |
                                                 Q(auto_modelis_id__modelis__icontains=query_text))
     return render(request, 'search.html', {'automobiliai': search_results, 'querytxt': query_text})
+
+
+class OrdersByUserListView(LoginRequiredMixin, generic.ListView):
+    model = Uzsakymas  # konteksto kint i sablona uzsakymas_list
+    template_name = 'user_orders.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Uzsakymas.objects.filter(vartotojas=self.request.user).filter(status__exact='a').order_by('atsiimti_iki')
