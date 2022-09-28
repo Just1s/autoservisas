@@ -24,7 +24,7 @@ class Automobilis(models.Model):
     vin = models.CharField('VIN kodas', max_length=17)
     klientas = models.CharField('Klientas', max_length=30)
     photo = models.ImageField('Nuotrauka', upload_to='photos', null=True)
-    aprasymas = HTMLField()
+    aprasymas = HTMLField(null=True)
 
     class Meta:
         verbose_name = 'Automobilis'
@@ -38,7 +38,6 @@ class Uzsakymas(models.Model):
     data = models.DateField('Data', blank=True)
     automobilis_id = models.ForeignKey('Automobilis', verbose_name='Automobilis',
                                        on_delete=models.SET_NULL, null=True, related_name='uzsakymai')
-    suma = models.FloatField('Suma')
 
     UZSK_STATUS = (
         ('e', 'Eileje'),
@@ -51,6 +50,15 @@ class Uzsakymas(models.Model):
     vartotojas = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     atsiimti_iki = models.DateField('Atsiimti iki', null=True, blank=True)
 
+    @property
+    def suma(self):
+        kainos = Uzsakymo_eilute.objects.filter(uzsakymas_id=self.id).all()
+        suma = 0
+        for i in kainos:
+            suma += i.suma
+        return suma
+
+    @property
     def is_overdue(self):
         if self.atsiimti_iki and date.today() > self.atsiimti_iki:
             return True
@@ -66,7 +74,7 @@ class Uzsakymas(models.Model):
 
 class Paslauga(models.Model):
     pavadinimas = models.CharField('Pavadinimas', max_length=50)
-    kaina = models.FloatField('Kaina')
+    kaina = models.DecimalField('Kaina', decimal_places=2, max_digits=10)
 
     class Meta:
         verbose_name = 'Paslauga'
@@ -81,11 +89,14 @@ class Uzsakymo_eilute(models.Model):
     uzsakymas_id = models.ForeignKey('Uzsakymas', verbose_name='Uzsakymas',
                                      on_delete=models.SET_NULL, null=True, related_name='uzsak_eil')
     kiekis = models.IntegerField('Kiekis')
-    kaina = models.FloatField('Kaina')
+
+    @property
+    def suma(self):
+        return self.paslauga_id.kaina * self.kiekis
 
     class Meta:
         verbose_name = 'Uzsakymo_eilute'
         verbose_name_plural = 'Uzsakymo_eilutes'
 
     def __str__(self):
-        return f'{self.paslauga_id} {self.uzsakymas_id} {self.kiekis} - {self.kaina}'
+        return f'{self.paslauga_id} {self.uzsakymas_id} {self.kiekis} - {self.paslauga_id.kaina}'

@@ -10,7 +10,7 @@ class UzsakymoEiluteInline(admin.TabularInline):
 
 
 class UzsakymasAdmin(admin.ModelAdmin):
-    list_display = ('automobilis_id', 'vartotojas', 'data', 'status', 'atsiimti_iki')
+    list_display = ('automobilis_id', 'vartotojas', 'data', 'suma', 'status', 'atsiimti_iki')
     inlines = [UzsakymoEiluteInline]
 
 
@@ -24,8 +24,12 @@ class PaslaugaAdmin(admin.ModelAdmin):
     list_display = ('pavadinimas', 'kaina')
 
 
+class UzsakymoEiluteAdmin(admin.ModelAdmin):
+    list_display = ('uzsakymas_id', 'paslauga_id', 'kiekis', 'suma')
+
+
 admin.site.register(Automobilis, AutomobilisAdmin)
 admin.site.register(Automobilio_modelis)
 admin.site.register(Paslauga, PaslaugaAdmin)
 admin.site.register(Uzsakymas, UzsakymasAdmin)
-admin.site.register(Uzsakymo_eilute)
+admin.site.register(Uzsakymo_eilute, UzsakymoEiluteAdmin)

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Automobilis, Paslauga, Uzsakymas
 from django.views import generic
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -35,8 +35,10 @@ def automobiliai(request):
 
 def paslaugos(request):
     pasl = Paslauga.objects.all()
+    visu_kaina = Paslauga.objects.aggregate(Sum('kaina'))
     kontext = {
-        'paslaugos': pasl
+        'paslaugos': pasl,
+        'visu_kaina': visu_kaina['kaina__sum']
     }
 
     return render(request, 'paslaugos.html', context=kontext)
